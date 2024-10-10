@@ -18,8 +18,13 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
+      path: '/nosql',
+      name: 'nosql',
+      component: () => import('../views/NoSQLView.vue')
+    },
+    {
       path: '/database',
-      name: 'Data Base Template',
+      name: 'database',
       component: () => import('../views/DataBaseTemplate.vue')
     }
   ]

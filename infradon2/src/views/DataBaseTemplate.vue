@@ -24,6 +24,7 @@ export default {
     },
 
     // Méthode pour récupérer les données
+
     async fetchData() {
       if (!this.databaseReference) {
         console.warn('Database not initialized')
@@ -38,11 +39,19 @@ export default {
         console.error('Error fetching data:', error)
       }
     }
+
   },
 
   mounted() {
+
+    console.log('mounted')
     this.initDatabase()
-    this.fetchData() // Appel pour récupérer les données dès que la base de données est prête
+    //this.fetchData() // Appel pour récupérer les données dès que la base de données est prête
   }
 }
 </script>
+<template>
+  <div class="example-component">
+    <h1>Database</h1>
+  </div>
+</template>
