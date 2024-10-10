@@ -11,19 +11,19 @@ export default {
   data() {
     return {
       number: 0
-    };
+    }
   },
   methods: {
     incrementNumber() {
-      this.number++;
+      this.number++
     }
   },
   computed: {
     message() {
-      return `Le numéro est : ${this.number}`;
+      return `Le numéro est : ${this.number}`
     }
   }
-};
+}
 </script>
 
 <style scoped>
