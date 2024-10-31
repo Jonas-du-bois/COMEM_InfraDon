@@ -4,7 +4,7 @@ import PouchDB from 'pouchdb'
 export default {
   data() {
     return {
-      datas: [], // Stockage des données récupérées
+      datas: [] as any[], // Stockage des données récupérées
       databaseReference: null as PouchDB.Database | null // Référence de la base de données
     }
   },
@@ -14,11 +14,11 @@ export default {
     initDatabase() {
       try {
         const db = new PouchDB(
-          'http://admin:Recopy2-Broadways2-Daylong9-Acts0@localhost:5984/newDB'
+          'http://admin:Recopy2-Broadways2-Daylong9-Acts0@localhost:5984/newDB' 
         )
-        this.databaseReference = db
-        console.log("Connected to the database 'newDB'")
-      } catch (error) {
+        this.databaseReference = db // Stocke la référence de la base de données
+        console.log("Connected to the database 'newDB'")  
+      } catch (error) { 
         console.error('Connection failed:', error)
       }
     },
@@ -26,6 +26,7 @@ export default {
     // Méthode pour récupérer les données
 
     async fetchData() {
+      console.log("Fetching data")
       if (!this.databaseReference) {
         console.warn('Database not initialized')
         return
@@ -33,7 +34,7 @@ export default {
 
       try {
         const result = await this.databaseReference.allDocs({ include_docs: true })
-        //this.datas = result.rows.map(row => row.doc);  // Stocke les documents récupérés
+        this.datas = result.rows.map(row => row.doc);  // Stocke les documents récupérés
         console.log('Data fetched successfully:', result)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -46,7 +47,7 @@ export default {
 
     console.log('mounted')
     this.initDatabase()
-    //this.fetchData() // Appel pour récupérer les données dès que la base de données est prête
+    this.fetchData() // Appel pour récupérer les données dès que la base de données est prête
   }
 }
 </script>
