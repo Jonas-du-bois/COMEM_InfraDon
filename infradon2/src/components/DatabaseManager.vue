@@ -46,8 +46,8 @@ export default defineComponent({
       try {
         // Utilisation de la prop dbUrl pour initialiser la base de données
         //this.databaseService = createDatabaseService(this.dbUrl);
-        this.databaseService = createDatabaseService(this.localURL)
-
+        this.databaseService = createDatabaseService(this.remoteURL, this.localURL)
+        this.updateStatus('Try to connect database', 'success')
         await this.databaseService.initialize()
         this.updateStatus('Connected to database', 'success')
         await this.replicate()
@@ -58,9 +58,10 @@ export default defineComponent({
 
     async replicate() {
       if (!this.databaseService) return
-
+      console.log('Call 1');
       await this.databaseService.replicateFromRemote()
-      this.databaseService.getAllDocuments()
+
+      this.fetchDocuments()
     },
 
     async fetchDocuments() {

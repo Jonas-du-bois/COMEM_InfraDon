@@ -20,8 +20,10 @@ export default {
 
 <template>
   <div class="example-component">
-    <!-- Utilisation du composant DatabaseManager -->
+    <!-- Utilisation du composant DatabaseManager 
     <DatabaseManager :remoteURL="'http://admin:Recopy2-Broadways2-Daylong9-Acts0@localhost:5984/newdb'"
-      :localURL="'newdb'" />
+    :localURL="'newdb'" />
+    -->
+    <DatabaseManager :remoteURL="'http://admin:admin@localhost:5984/newdb'" :localURL="'newdb'" />
   </div>
 </template>
