@@ -5,21 +5,73 @@ import type { DatabaseDocument, DatabaseResponse, DatabaseError } from '../types
 
 class DatabaseService {
   private db: PouchDB.Database | null = null;
-  private readonly dbUrl: string;
+  private readonly remoteURL: string;
 
   constructor(dbUrl: string) {  // URL passé en paramètre
-    this.dbUrl = dbUrl;
+    this.remoteURL = dbUrl;
   }
 
   // Initialisation de la connexion
   async initialize(): Promise<void> {
     try {
-      this.db = new PouchDB(this.dbUrl);
+      this.db = new PouchDB(this.remoteURL);
       await this.db.info(); // Test de connexion
     } catch (error) {
       this.handleError('Failed to initialize database', error);
     }
   }
+
+  //fonction replicate depuis le serveur distante la base de donné from distant to local
+  async replicateFromRemote() {
+    const db = this.db;
+    
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+  
+    try {
+      // Réplication depuis le serveur distant vers la base locale
+      const replication = db.replicate.from(this.remoteURL); // this.dbUrl est l'URL de la base distante
+      
+      // Ajouter des gestionnaires d'événements pour suivre l'état de la réplication
+      replication.on('complete', function () {
+        console.log('Réplication terminée avec succès !');
+      });
+  
+      replication.on('error', function (err: any) {
+        console.error('Erreur lors de la réplication', err);
+      });
+    } catch (error) {
+      console.error("Erreur lors de la réplication depuis le serveur distant", error);
+    }
+  }
+
+//fonction replicate depuis le serveur distante la base de donné to distant from local
+
+  async replicateToRemote() {
+    const db = this.db;
+    
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+  
+    try {
+      // Réplication depuis la base locale vers le serveur distant
+      const replication = db.replicate.to(this.remoteURL); // this.dbUrl est l'URL de la base distante
+  
+      // Ajouter des gestionnaires d'événements pour suivre l'état de la réplication
+      replication.on('complete', function () {
+        console.log('Réplication terminée avec succès vers le serveur distant !');
+      });
+  
+      replication.on('error', function (err: any) {
+        console.error('Erreur lors de la réplication vers le serveur distant', err);
+      });
+    } catch (error) {
+      console.error("Erreur lors de la réplication vers le serveur distant", error);
+    }
+  }
+  
 
   // Création d'un document
   async createDocument(document: Omit<DatabaseDocument, '_id' | '_rev'>): Promise<DatabaseResponse> {

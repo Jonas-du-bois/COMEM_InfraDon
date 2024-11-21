@@ -1,58 +1,28 @@
 <script lang="ts">
-import PouchDB from 'pouchdb'
+import DatabaseManager from '../components/DatabaseManager.vue';
 
 export default {
-  data() {
-    return {
-      datas: [] as any[], // Stockage des données récupérées
-      databaseReference: null as PouchDB.Database | null // Référence de la base de données
-    }
+  components: {
+    DatabaseManager
   },
 
-  methods: {
-    // Initialisation de la base de données
-    initDatabase() {
-      try {
-        const db = new PouchDB(
-          'http://admin:Recopy2-Broadways2-Daylong9-Acts0@localhost:5984/newDB' 
-        )
-        this.databaseReference = db // Stocke la référence de la base de données
-        console.log("Connected to the database 'newDB'")  
-      } catch (error) { 
-        console.error('Connection failed:', error)
-      }
-    },
-
-    // Méthode pour récupérer les données
-
-    async fetchData() {
-      console.log("Fetching data")
-      if (!this.databaseReference) {
-        console.warn('Database not initialized')
-        return
-      }
-
-      try {
-        const result = await this.databaseReference.allDocs({ include_docs: true })
-        this.datas = result.rows.map(row => row.doc);  // Stocke les documents récupérés
-        console.log('Data fetched successfully:', result)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-
+  data() {
+    return {
+      // Pas besoin de gérer la base de données manuellement ici
+    };
   },
 
   mounted() {
-
-    console.log('mounted')
-    this.initDatabase()
-    this.fetchData() // Appel pour récupérer les données dès que la base de données est prête
+    // Aucune initialisation de la base de données n'est nécessaire ici
   }
-}
+};
 </script>
+
 <template>
   <div class="example-component">
-    <h1>Database</h1>
+
+
+    <!-- Utilisation du composant DatabaseManager -->
+    <DatabaseManager :remoteURL="'http://admin:Recopy2-Broadways2-Daylong9-Acts0@localhost:5984/newdb'" :localURL="'newdb'" />
   </div>
 </template>
